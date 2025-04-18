@@ -7,55 +7,64 @@ def reset_sampled_kicks(p):
         p._initC[col] = -100.0
 
 def run_variation(file_name=None, alpha_ce=None, mt_eff=None, ecsn_kick=None, bhflag=None, qcritB=None,
-                  Z_factor=None, gamma=None):
+                  Z_factor=None, gamma=None, ccsn_kick=None):
     print("Loading in the template")
     p = cogsworth.pop.load("/mnt/home/twagg/ceph/pops/feedback-variations/variation-template.h5",
                            parts=["initial_binaries", "initial_galaxy"])
     
     print("Adjusting settings")
     
-    particle_ids = p.initC["particle_id"]
+    particle_ids = p.initial_binaries["particle_id"]
     
     if alpha_ce is not None:
         p.BSE_settings["alpha1"] = alpha_ce
-        p.initC["alpha1"] = alpha_ce
+        # p.initC["alpha1"] = alpha_ce
 
     if mt_eff is not None:
         p.BSE_settings["acc_lim"] = mt_eff
-        p.initC["acc_lim"] = mt_eff
+        # p.initC["acc_lim"] = mt_eff
         
     if ecsn_kick is not None:
-        reset_sampled_kicks(p)
+        # reset_sampled_kicks(p)
         p.BSE_settings["sigmadiv"] = ecsn_kick
-        p.initC["sigmadiv"] = ecsn_kick
+        # p.initC["sigmadiv"] = ecsn_kick
+        
+    if ccsn_kick is not None:
+        # reset_sampled_kicks(p)
+        p.BSE_settings["sigma"] = ccsn_kick
         
     if bhflag is not None:
-        reset_sampled_kicks(p)
+        # reset_sampled_kicks(p)
         p.BSE_settings["bhflag"] = bhflag
-        p.initC["bhflag"] = bhflag
+        # p.initC["bhflag"] = bhflag
 
     if qcritB is not None:
         # set qcrit for kstar = 2,3,4
         qcrit_array = [0.0, 0.0, qcritB, qcritB, qcritB,
                        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         p.BSE_settings["qcrit_array"] = qcrit_array
-        p.initC["qcrit_2"] = qcritB
-        p.initC["qcrit_3"] = qcritB
-        p.initC["qcrit_4"] = qcritB
+        # p.initC["qcrit_2"] = qcritB
+        # p.initC["qcrit_3"] = qcritB
+        # p.initC["qcrit_4"] = qcritB
 
     if Z_factor is not None:
         if p._initial_binaries is not None:
             p._initial_binaries["metallicity"] *= Z_factor
-        p.initC["metallicity"] *= Z_factor
+        # p.initC["metallicity"] *= Z_factor
         p._initial_galaxy._Z *= Z_factor
 
     if gamma is not None:
         p.BSE_settings["gamma"] = gamma
-        p.initC["gamma"] = gamma
+        # p.initC["gamma"] = gamma
+
+    p._file = None
 
     print("Starting stellar evolution")
         
     p.perform_stellar_evolution()
+
+    exploding_nums = p.bpp[p.bpp["evol_type"].isin([15, 16])]["bin_num"].unique()
+    p = p[exploding_nums]
     
     print("Starting galactic evolution")
     
@@ -83,6 +92,8 @@ def main():
                         help='BH kick flag')
     parser.add_argument('-e', '--ecsn-kick', default=None, type=int,
                         help='ECSN kick strength')
+    parser.add_argument('-C', '--ccsn-kick', default=None, type=int,
+                        help='CCSN kick strength')
     parser.add_argument('-q', '--qcritB', default=None, type=float,
                         help='Critical mass ratio for kstar = 2,3,4')
     parser.add_argument('-Z', '--Z_factor', default=None, type=float,
@@ -93,7 +104,7 @@ def main():
 
     run_variation(file_name=args.file,
                   alpha_ce=args.alpha_ce, mt_eff=args.beta, ecsn_kick=args.ecsn_kick,
-                  bhflag=args.bhflag, qcritB=args.qcritB,
+                  ccsn_kick=args.ccsn_kick, bhflag=args.bhflag, qcritB=args.qcritB,
                   Z_factor=args.Z_factor, gamma=args.gamma)
 
 if __name__ == "__main__":

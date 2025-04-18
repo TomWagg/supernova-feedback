@@ -26,18 +26,22 @@ params = {'figure.figsize': (12, 8),
 plt.rcParams.update(params)
 
 
-star_particles = pd.read_hdf("/mnt/home/twagg/supernova-feedback/data/FIRE_star_particles.h5")
+# star_particles = pd.read_hdf("/mnt/home/twagg/supernova-feedback/data/FIRE_star_particles.h5")
+# star_particles["ind"] = np.arange(len(star_particles))
+# particle_orbits = np.load("/mnt/home/twagg/supernova-feedback/data/particle_orbits.npy", allow_pickle=True)
+
+star_particles = pd.read_hdf("/mnt/home/twagg/supernova-feedback/data/r442_init_recent_stars.h5")
 star_particles["ind"] = np.arange(len(star_particles))
-particle_orbits = np.load("/mnt/home/twagg/supernova-feedback/data/particle_orbits.npy", allow_pickle=True)
+particle_orbits = np.load("/mnt/home/twagg/supernova-feedback/data/r442-particle_orbits.npy", allow_pickle=True)
 
 folder = "feedback-variations"
-# file_names = ["beta-0.0", "beta-0.5", "beta-1.0", "ce-0.1",
-              # "ce-10.0", "no-fallback"]
-# file_names = ["fiducial", "ecsn-265", "no-fallback"]
-# file_names = ["r-1.0", "r-10.0", "r-100.0"]
-# file_names = ["qcritB-1000.0"]#, "ce-10.0", "no-fallback"]
-# file_names = ["porb-0", "porb-minus1", "q-plus1", "q-minus1"]
-file_names = ["gamma-disc"]
+# file_names = ["beta-0.0", "beta-0.5", "beta-1.0", "ce-0.1", "ce-10.0"]
+# file_names = ["qcritB-0.0", "qcritB-1000.0", "ccsn-20", "ecsn-265", "no-fallback"]
+# file_names = ["imf-1.9", "imf-2.7", "porb-0", "porb-minus1"]
+# file_names = ["q-minus1", "q-plus1", "v-disp-0.5", "v-disp-5"]
+# file_names = ['singles', 'Z-0.5', 'Z-0.2', 'Z-0.1', 'Z-0.05']
+# file_names = ["porb-max-3"]
+file_names = ["r442-Zx2"]
     
 for file_name in file_names:
     print(f"Doing distances for {file_name}")
