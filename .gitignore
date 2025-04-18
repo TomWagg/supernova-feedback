@@ -141,3 +141,4 @@ cov.xml
 *.h5
 *.out
 *.npy
+*.csv
