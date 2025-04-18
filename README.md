@@ -1,4 +1,5 @@
 <div align='center'>
+  <img src="plots/feedback.png" width="200px">
   <h1 align='center'>Delayed and Displaced: The Impact of Binary Interactions on Core-collapse SN Feedback</h1>
   <b align='center'><ins>Tom Wagg</ins>, Julianne J. Dalcanton, Mathieu Renzo, Katelyn Breivik, Matthew E. Orr,
   Adrian M. Price-Whelan, Akaxia Cruz, Alyson Brooks, Ulrich P. Steinwandel, and Eric C. Bellm</b>
@@ -21,6 +22,6 @@
 </p>
 
 <p align='center'>
-  A companion to Wagg+2025, a paper investigating the impact of binary interactions on the temporal and spatial distribution of core-collapse supernova feedback.
+  A companion to Wagg+2025, a paper investigating the impact of binary interactions on the temporal and spatial distribution of core-collapse supernova feedback. We include variations of our models across binary physics, initial conditions, metallicity, and galaxy parameters and develop an analytic model for subgrid feedback in future galaxy evolution simulations.
 </p>
 
