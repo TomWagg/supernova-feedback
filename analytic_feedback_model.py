@@ -152,33 +152,3 @@ def sample_ccsn(n, FeH=0, v_disp=1.7):
     vels[eject_inds] = eject_vels
 
     return times, vels
-
-    times = sample_ccsn_times(n=n, FeH=FeH)
-    vels = maxwell(scale=v_disp / np.sqrt(3)).rvs(n)
-
-    inds = np.arange(n)
-    
-    low_t_inds = inds[(times > 5) & (times < 44)]
-    eject_inds = np.random.choice(low_t_inds, int(len(low_t_inds) * 0.24), replace=False)
-    
-    low_t_inds = inds[(times > 44) & (times < 60)]
-    eject_inds = np.concatenate((eject_inds, np.random.choice(low_t_inds, int(len(low_t_inds) * 0.1), replace=False)))
-    
-    n_eject = len(eject_inds)
-    f_MT = 0.87 + 0.13 * FeH
-    n_MT = int(f_MT * n_eject)
-    
-    eject_mt = beta(1.4 - 0.9 * FeH, 12 + 2.5 * FeH, loc=5, scale=100).rvs(n_MT)
-    
-    factor = -1.8 + np.sqrt(abs(FeH)) * 0.5
-    f1 = factor + 1
-    A = ((100**f1 - 5**f1) / f1)**(-1)
-    u = np.random.rand(n_eject - n_MT)
-    eject_nomt = (u * f1 / A + 5**f1)**(1/f1)
-
-    eject_vels = np.concatenate((eject_mt, eject_nomt))
-    print(len(eject_vels))
-
-    vels[eject_inds] = eject_vels
-
-    return times, vels
